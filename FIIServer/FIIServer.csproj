@@ -16,12 +16,14 @@
     <None Include="MLModel.training.cs">
       <DependentUpon>MLModel.mbconfig</DependentUpon>
     </None>
-    <None Include="MLModel.zip">
-      <DependentUpon>MLModel.mbconfig</DependentUpon>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ImagesTemp\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="MLModels\MLModel.zip">
+      <DependentUpon>MLModel.mbconfig</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>
