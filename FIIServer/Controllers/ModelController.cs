@@ -1,14 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FIIServer.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.ML;
 using System;
-using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.ML;
-using FIIServer.Models;
 
 namespace FIIServer.Controllers
 {
@@ -24,7 +25,7 @@ namespace FIIServer.Controllers
         private readonly ILogger<ModelController> _logger;
         private readonly PredictionEnginePool<MLModel.ModelInput, MLModel.ModelOutput> _predictionEnginePool;
         private readonly string _imagesTmpFolder;
-
+        private string folderPath = "ImagesTemp";
 
         public ModelController(ILogger<ModelController> logger, PredictionEnginePool<MLModel.ModelInput, MLModel.ModelOutput> predictionEnginePool)
         {
@@ -59,18 +60,21 @@ namespace FIIServer.Controllers
         [HttpPost]
         public MLModel.ModelOutput Post([FromBody] AndroidRequest androidRequest)
         {
-            url = "https://upload.wikimedia.org/wikipedia/en/thumb/1/17/Bugs_Bunny.svg/1200px-Bugs_Bunny.svg.png";
             //    WebClient client = new WebClient();
             //client.DownloadFile(url, _imagesTmpFolder + "//1");
             //string imageFileRelativePath = @"../../../assets" + url;
             //string imageFilePath = GetAbsolutePath(imageFileRelativePath);
 
-            var x = Download(url, _imagesTmpFolder, "gigi");
-            var xxx = _imagesTmpFolder + "\\" + "altTest.jpg";
+            var image = ConvertBase64ToImage(androidRequest.Base64);
+
+            var filePath = "Pictures\\" + Guid.NewGuid().ToString();
+
+            SaveImage(image, filePath, ImageFormat.Png);
+
 
             var sampleData = new MLModel.ModelInput()
             {
-                ImageSource = xxx
+                ImageSource = filePath + "." + ImageFormat.Png.ToString()
             };
 
             //Load model and predict output
@@ -114,6 +118,21 @@ namespace FIIServer.Controllers
             Console.WriteLine("");
             Console.WriteLine($"Downloaded {relativeFilePath}");
 
+            return true;
+        }
+
+        public Image ConvertBase64ToImage(string base64) => (Bitmap)new ImageConverter().ConvertFrom(Convert.FromBase64String(base64));
+
+        public static bool SaveImage(Image image, string filepath, ImageFormat imageFormat)
+        {
+            try
+            {
+                image.Save(filepath + ".png", imageFormat);
+            }
+            catch
+            {
+                return false;
+            }
             return true;
         }
     }
