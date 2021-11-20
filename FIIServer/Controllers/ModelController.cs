@@ -71,14 +71,17 @@ namespace FIIServer.Controllers
 
             SaveImage(image, filePath, ImageFormat.Png);
 
+            var fullPath = filePath + "." + ImageFormat.Png.ToString();
 
             var sampleData = new MLModel.ModelInput()
             {
-                ImageSource = filePath + "." + ImageFormat.Png.ToString()
+                ImageSource = fullPath
             };
 
             //Load model and predict output
             var result = _predictionEnginePool.Predict(sampleData);
+
+            DeleteImageByPath(fullPath);
 
             return result;
         }
@@ -134,6 +137,17 @@ namespace FIIServer.Controllers
                 return false;
             }
             return true;
+        }
+
+        public static bool DeleteImageByPath(string path)
+        {
+            FileInfo file = new FileInfo(path);
+            if (file.Exists)
+            {
+                file.Delete();
+                return true;
+            }
+            return false;
         }
     }
 }
