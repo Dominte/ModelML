@@ -46,7 +46,6 @@ namespace FIIServer.Controllers
             //var x = Download(url, _imagesTmpFolder, "gigi");
             var xxx = _imagesTmpFolder + "\\" + "altTest.jpg";
 
-            System.Diagnostics.Debug.WriteLine("mias");
 
             var sampleData = new MLModel.ModelInput()
             {
@@ -55,6 +54,7 @@ namespace FIIServer.Controllers
 
             //Load model and predict output
             var result = _predictionEnginePool.Predict(sampleData);
+            System.Diagnostics.Debug.WriteLine(result.ToString());
 
             return result;
         }
