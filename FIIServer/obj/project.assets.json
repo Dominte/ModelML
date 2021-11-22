@@ -6359,19 +6359,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Grasun\\.nuget\\packages\\": {}
+    "C:\\Users\\f.dominte\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Grasun\\Documents\\GitHub\\ModelML\\FIIServer\\FIIServer.csproj",
+      "projectUniqueName": "C:\\Users\\f.dominte\\Documents\\GitHub\\tba\\ModelML\\FIIServer\\FIIServer.csproj",
       "projectName": "FIIServer",
-      "projectPath": "C:\\Users\\Grasun\\Documents\\GitHub\\ModelML\\FIIServer\\FIIServer.csproj",
-      "packagesPath": "C:\\Users\\Grasun\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Grasun\\Documents\\GitHub\\ModelML\\FIIServer\\obj\\",
+      "projectPath": "C:\\Users\\f.dominte\\Documents\\GitHub\\tba\\ModelML\\FIIServer\\FIIServer.csproj",
+      "packagesPath": "C:\\Users\\f.dominte\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\f.dominte\\Documents\\GitHub\\tba\\ModelML\\FIIServer\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Grasun\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\f.dominte\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -6379,7 +6379,8 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {},
+        "https://pkgs.dev.azure.com/TBA-TOS/_packaging/TOS-Feed/nuget/v3/index.json": {}
       },
       "frameworks": {
         "netcoreapp3.1": {
@@ -6428,6 +6429,12 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "version": "[3.1.18, 3.1.18]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -6436,7 +6443,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.402\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.303\\RuntimeIdentifierGraph.json"
       }
     }
   }

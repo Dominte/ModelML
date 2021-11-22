@@ -35,16 +35,18 @@ namespace FIIServer.Controllers
         }
 
         [HttpGet]
-        public MLModel.ModelOutput Get(string url)
+        public MLModel.ModelOutput Get()
         {
-            url = "https://upload.wikimedia.org/wikipedia/en/thumb/1/17/Bugs_Bunny.svg/1200px-Bugs_Bunny.svg.png";
+            //url = "https://upload.wikimedia.org/wikipedia/en/thumb/1/17/Bugs_Bunny.svg/1200px-Bugs_Bunny.svg.png";
             //    WebClient client = new WebClient();
             //client.DownloadFile(url, _imagesTmpFolder + "//1");
             //string imageFileRelativePath = @"../../../assets" + url;
             //string imageFilePath = GetAbsolutePath(imageFileRelativePath);
 
-            var x = Download(url, _imagesTmpFolder, "gigi");
+            //var x = Download(url, _imagesTmpFolder, "gigi");
             var xxx = _imagesTmpFolder + "\\" + "altTest.jpg";
+
+            System.Diagnostics.Debug.WriteLine("mias");
 
             var sampleData = new MLModel.ModelInput()
             {
@@ -71,7 +73,7 @@ namespace FIIServer.Controllers
 
             SaveImage(image, filePath, ImageFormat.Png);
 
-            var fullPath = filePath + "." + ImageFormat.Png.ToString();
+                var fullPath = filePath + "." + ImageFormat.Png.ToString();
 
             var sampleData = new MLModel.ModelInput()
             {
