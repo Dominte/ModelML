@@ -35,15 +35,16 @@ namespace FIIServer.Controllers
         }
 
         [HttpGet]
+        public void Retrain()
+        {
+            MLModel.RetrainPipeline()
+        }
+
+        [HttpGet]
         public MLModel.ModelOutput Get()
         {
-            //url = "https://upload.wikimedia.org/wikipedia/en/thumb/1/17/Bugs_Bunny.svg/1200px-Bugs_Bunny.svg.png";
-            //    WebClient client = new WebClient();
-            //client.DownloadFile(url, _imagesTmpFolder + "//1");
-            //string imageFileRelativePath = @"../../../assets" + url;
-            //string imageFilePath = GetAbsolutePath(imageFileRelativePath);
+            System.Diagnostics.Debug.WriteLine("Accessed GET /model");
 
-            //var x = Download(url, _imagesTmpFolder, "gigi");
             var xxx = _imagesTmpFolder + "\\" + "altTest.jpg";
 
 
@@ -54,7 +55,8 @@ namespace FIIServer.Controllers
 
             //Load model and predict output
             var result = _predictionEnginePool.Predict(sampleData);
-            System.Diagnostics.Debug.WriteLine(result.ToString());
+
+            System.Diagnostics.Debug.WriteLine(result + " : " + result.Prediction);
 
             return result;
         }
