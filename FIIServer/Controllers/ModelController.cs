@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.ML;
 
 namespace FIIServer.Controllers
 {
@@ -37,7 +38,7 @@ namespace FIIServer.Controllers
         [HttpGet]
         public void Retrain()
         {
-            MLModel.RetrainPipeline()
+            
         }
 
         [HttpGet]
