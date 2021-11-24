@@ -18,15 +18,10 @@ namespace FIIServer.Controllers
     [Route("[controller]")]
     public class ModelController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
         private readonly ILogger<ModelController> _logger;
         private readonly PredictionEnginePool<MLModel.ModelInput, MLModel.ModelOutput> _predictionEnginePool;
         private readonly string _imagesTmpFolder;
-        private string folderPath = "ImagesTemp";
+        private readonly float _lowerBound = (float) 0.75;
 
         public ModelController(ILogger<ModelController> logger, PredictionEnginePool<MLModel.ModelInput, MLModel.ModelOutput> predictionEnginePool)
         {
@@ -39,9 +34,7 @@ namespace FIIServer.Controllers
         public IActionResult Get()
         {
             System.Diagnostics.Debug.WriteLine("Accessed GET /model route");
-
             var folder = _imagesTmpFolder + "\\" + "altTest.jpg";
-
             var response = new Response();
 
             var sampleData = new MLModel.ModelInput()
@@ -49,11 +42,17 @@ namespace FIIServer.Controllers
                 ImageSource = folder
             };
 
-            //Load model and predict output
             var result = _predictionEnginePool.Predict(sampleData);
+            Array.Sort(result.Score);
+            Array.Reverse(result.Score);
 
-            System.Diagnostics.Debug.WriteLine(result.Score[0] + " : " + result.Prediction);
+            if (result.Score[0] < _lowerBound)
+            {
+                var error = new Error("Picture could not be determined clearly. Please retake the picture from another angle");
+                return NoContent();
+            }
 
+            System.Diagnostics.Debug.WriteLine(result.Score[0] + "% : " + result.Prediction);
             response.Model = result;
             
             return Ok(response);
@@ -70,9 +69,10 @@ namespace FIIServer.Controllers
             {
                 image = ConvertBase64ToImage(androidRequest.Base64);
             }
-            catch 
+            catch
             {
-                return BadRequest();
+                var error = new Error("Given string is not Base64");
+                return BadRequest(error);
             }
 
             var filePath = "Pictures\\" + Guid.NewGuid();
@@ -101,35 +101,6 @@ namespace FIIServer.Controllers
 
             string fullPath = Path.Combine(assemblyFolderPath, relativePath);
             return fullPath;
-        }
-
-        public static bool Download(string url, string destDir, string destFileName)
-        {
-            if (destFileName == null)
-                destFileName = url.Split(Path.DirectorySeparatorChar).Last();
-
-            Directory.CreateDirectory(destDir);
-
-            string relativeFilePath = Path.Combine(destDir, destFileName);
-
-            //if (File.Exists(relativeFilePath))
-            //{
-            //    Console.WriteLine($"{relativeFilePath} already exists.");
-            //    return false;
-            //}
-
-            var wc = new WebClient();
-            Console.WriteLine($"Downloading {relativeFilePath}");
-            var download = Task.Run(() => wc.DownloadFile(url, relativeFilePath));
-            while (!download.IsCompleted)
-            {
-                Thread.Sleep(1000);
-                Console.Write(".");
-            }
-            Console.WriteLine("");
-            Console.WriteLine($"Downloaded {relativeFilePath}");
-
-            return true;
         }
 
         public Image ConvertBase64ToImage(string base64) => (Bitmap)new ImageConverter().ConvertFrom(Convert.FromBase64String(base64));
