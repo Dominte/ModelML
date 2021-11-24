@@ -11,6 +11,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using static System.String;
 
 namespace FIIServer.Controllers
 {
@@ -21,7 +22,7 @@ namespace FIIServer.Controllers
         private readonly ILogger<ModelController> _logger;
         private readonly PredictionEnginePool<MLModel.ModelInput, MLModel.ModelOutput> _predictionEnginePool;
         private readonly string _imagesTmpFolder;
-        private readonly float _lowerBound = (float) 0.75;
+        private readonly float _lowerBound = (float)0.75;
 
         public ModelController(ILogger<ModelController> logger, PredictionEnginePool<MLModel.ModelInput, MLModel.ModelOutput> predictionEnginePool)
         {
@@ -54,7 +55,7 @@ namespace FIIServer.Controllers
 
             System.Diagnostics.Debug.WriteLine(result.Score[0] + "% : " + result.Prediction);
             response.Model = result;
-            
+
             return Ok(response);
         }
 
@@ -64,6 +65,8 @@ namespace FIIServer.Controllers
             System.Diagnostics.Debug.WriteLine("Accessed POST /model route");
 
             var response = new Response();
+            var imageFormat = ReturnImageFormat(androidRequest.ImageFormat);
+
             Image image;
             try
             {
@@ -76,20 +79,18 @@ namespace FIIServer.Controllers
             }
 
             var filePath = "Pictures\\" + Guid.NewGuid();
+            var fullPath = filePath + "." + imageFormat.ToString().ToLower();
 
-            SaveImage(image, filePath, ImageFormat.Png);
+            SaveImage(image, filePath, imageFormat);
 
-            var fullPath = filePath + "." + ImageFormat.Png;
             var sampleData = new MLModel.ModelInput()
             {
                 ImageSource = fullPath
             };
 
-            var result = _predictionEnginePool.Predict(sampleData);
+            response.Model = _predictionEnginePool.Predict(sampleData);
 
             DeleteImageByPath(fullPath);
-
-            response.Model = result;
 
             return Ok(response);
         }
@@ -124,6 +125,21 @@ namespace FIIServer.Controllers
             if (!file.Exists) return false;
             file.Delete();
             return true;
+        }
+
+        public static ImageFormat ReturnImageFormat(string imageFormat)
+        {
+            if (IsNullOrEmpty(imageFormat) || imageFormat.ToLower().Equals("png"))
+            {
+                return ImageFormat.Png;
+            }
+
+            if (imageFormat.ToLower().Equals("jpg") || imageFormat.ToLower().Equals("jpeg"))
+            {
+                return ImageFormat.Jpeg;
+            }
+
+            return ImageFormat.Png;
         }
     }
 }
