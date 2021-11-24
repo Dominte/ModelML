@@ -8,6 +8,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -35,56 +36,62 @@ namespace FIIServer.Controllers
         }
 
         [HttpGet]
-        public Response Get()
+        public IActionResult Get()
         {
-            System.Diagnostics.Debug.WriteLine("Accessed GET /model");
+            System.Diagnostics.Debug.WriteLine("Accessed GET /model route");
 
-            var xxx = _imagesTmpFolder + "\\" + "altTest.jpg";
+            var folder = _imagesTmpFolder + "\\" + "altTest.jpg";
 
             var response = new Response();
 
             var sampleData = new MLModel.ModelInput()
             {
-                ImageSource = xxx
+                ImageSource = folder
             };
 
             //Load model and predict output
             var result = _predictionEnginePool.Predict(sampleData);
 
-            System.Diagnostics.Debug.WriteLine(result + " : " + result.Prediction);
+            System.Diagnostics.Debug.WriteLine(result.Score[0] + " : " + result.Prediction);
 
             response.Model = result;
-
-            return response;
+            
+            return Ok(response);
         }
 
         [HttpPost]
-        public Response Post([FromBody] AndroidRequest androidRequest)
+        public IActionResult Post([FromBody] AndroidRequest androidRequest)
         {
-            System.Diagnostics.Debug.WriteLine("Accessed GET /model");
+            System.Diagnostics.Debug.WriteLine("Accessed POST /model route");
 
             var response = new Response();
-            var image = ConvertBase64ToImage(androidRequest.Base64);
+            Image image;
+            try
+            {
+                image = ConvertBase64ToImage(androidRequest.Base64);
+            }
+            catch 
+            {
+                return BadRequest();
+            }
 
-            var filePath = "Pictures\\" + Guid.NewGuid().ToString();
+            var filePath = "Pictures\\" + Guid.NewGuid();
 
             SaveImage(image, filePath, ImageFormat.Png);
 
-            var fullPath = filePath + "." + ImageFormat.Png.ToString();
-
+            var fullPath = filePath + "." + ImageFormat.Png;
             var sampleData = new MLModel.ModelInput()
             {
                 ImageSource = fullPath
             };
 
-            //Load model and predict output
             var result = _predictionEnginePool.Predict(sampleData);
 
             DeleteImageByPath(fullPath);
 
             response.Model = result;
 
-            return response;
+            return Ok(response);
         }
 
         public static string GetAbsolutePath(string relativePath)
@@ -142,13 +149,10 @@ namespace FIIServer.Controllers
 
         public static bool DeleteImageByPath(string path)
         {
-            FileInfo file = new FileInfo(path);
-            if (file.Exists)
-            {
-                file.Delete();
-                return true;
-            }
-            return false;
+            var file = new FileInfo(path);
+            if (!file.Exists) return false;
+            file.Delete();
+            return true;
         }
     }
 }
