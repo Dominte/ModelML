@@ -10,7 +10,6 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.ML;
 
 namespace FIIServer.Controllers
 {
@@ -36,18 +35,13 @@ namespace FIIServer.Controllers
         }
 
         [HttpGet]
-        public void Retrain()
-        {
-            
-        }
-
-        [HttpGet]
-        public MLModel.ModelOutput Get()
+        public Response Get()
         {
             System.Diagnostics.Debug.WriteLine("Accessed GET /model");
 
             var xxx = _imagesTmpFolder + "\\" + "altTest.jpg";
 
+            var response = new Response();
 
             var sampleData = new MLModel.ModelInput()
             {
@@ -59,24 +53,24 @@ namespace FIIServer.Controllers
 
             System.Diagnostics.Debug.WriteLine(result + " : " + result.Prediction);
 
-            return result;
+            response.Model = result;
+
+            return response;
         }
 
         [HttpPost]
-        public MLModel.ModelOutput Post([FromBody] AndroidRequest androidRequest)
+        public Response Post([FromBody] AndroidRequest androidRequest)
         {
-            //    WebClient client = new WebClient();
-            //client.DownloadFile(url, _imagesTmpFolder + "//1");
-            //string imageFileRelativePath = @"../../../assets" + url;
-            //string imageFilePath = GetAbsolutePath(imageFileRelativePath);
+            System.Diagnostics.Debug.WriteLine("Accessed GET /model");
 
+            var response = new Response();
             var image = ConvertBase64ToImage(androidRequest.Base64);
 
             var filePath = "Pictures\\" + Guid.NewGuid().ToString();
 
             SaveImage(image, filePath, ImageFormat.Png);
 
-                var fullPath = filePath + "." + ImageFormat.Png.ToString();
+            var fullPath = filePath + "." + ImageFormat.Png.ToString();
 
             var sampleData = new MLModel.ModelInput()
             {
@@ -88,7 +82,9 @@ namespace FIIServer.Controllers
 
             DeleteImageByPath(fullPath);
 
-            return result;
+            response.Model = result;
+
+            return response;
         }
 
         public static string GetAbsolutePath(string relativePath)
