@@ -6,11 +6,7 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Routing;
 using static System.String;
 
 namespace FIIServer.Controllers
@@ -22,7 +18,7 @@ namespace FIIServer.Controllers
         private readonly ILogger<ModelController> _logger;
         private readonly PredictionEnginePool<MLModel.ModelInput, MLModel.ModelOutput> _predictionEnginePool;
         private readonly string _imagesTmpFolder;
-        private readonly float _lowerBound = (float)0.75;
+        private float _lowerBound = (float)0.85;
 
         public ModelController(ILogger<ModelController> logger, PredictionEnginePool<MLModel.ModelInput, MLModel.ModelOutput> predictionEnginePool)
         {
@@ -30,6 +26,23 @@ namespace FIIServer.Controllers
             _predictionEnginePool = predictionEnginePool;
             _imagesTmpFolder = GetAbsolutePath(@"ImagesTemp");
         }
+
+        [HttpPut("lowerBound")]
+        public IActionResult SetLowerBound([FromBody] AndroidRequest androidRequest)
+        {
+            try
+            {
+                _lowerBound = (float) androidRequest.LowerBound / 100;
+            }
+            catch
+            {
+                var error = new Error("Could not overwrite lowerBound");
+                return BadRequest(error);
+            }
+
+            return Ok($"Set lowerBound to {_lowerBound}");
+        }
+
 
         [HttpGet]
         public IActionResult Get()
@@ -49,7 +62,6 @@ namespace FIIServer.Controllers
 
             if (result.Score[0] < _lowerBound)
             {
-                var error = new Error("Picture could not be determined clearly. Please retake the picture from another angle");
                 return NoContent();
             }
 
@@ -88,8 +100,20 @@ namespace FIIServer.Controllers
                 ImageSource = fullPath
             };
 
-            response.Model = _predictionEnginePool.Predict(sampleData);
+            var result = _predictionEnginePool.Predict(sampleData);
+            
+            Array.Sort(result.Score);
+            Array.Reverse(result.Score);
 
+            if (result.Score[0] < _lowerBound)
+            {
+                var error = new Error("Picture could not be determined. Please retake the picture from another angle");
+                DeleteImageByPath(fullPath);
+                return BadRequest(error);
+            }
+
+            System.Diagnostics.Debug.WriteLine(result.Score[0] + "% : " + result.Prediction);
+            response.Model = result;
             DeleteImageByPath(fullPath);
 
             return Ok(response);

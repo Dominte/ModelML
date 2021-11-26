@@ -19,8 +19,8 @@
     },
     "FIIServer": {
       "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "weatherforecast",
+      "launchBrowser": false,
+      "launchUrl": "model",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
