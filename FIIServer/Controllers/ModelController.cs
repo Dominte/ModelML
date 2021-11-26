@@ -18,7 +18,7 @@ namespace FIIServer.Controllers
         private readonly ILogger<ModelController> _logger;
         private readonly PredictionEnginePool<MLModel.ModelInput, MLModel.ModelOutput> _predictionEnginePool;
         private readonly string _imagesTmpFolder;
-        private float _lowerBound = (float)0.85;
+        private float _lowerBound = (float)100.00;
 
         public ModelController(ILogger<ModelController> logger, PredictionEnginePool<MLModel.ModelInput, MLModel.ModelOutput> predictionEnginePool)
         {
@@ -76,6 +76,8 @@ namespace FIIServer.Controllers
         {
             System.Diagnostics.Debug.WriteLine("Accessed POST /model route");
 
+            System.Diagnostics.Debug.WriteLine("Initialise conversion from Base64");
+
             var response = new Response();
             var imageFormat = ReturnImageFormat(androidRequest.ImageFormat);
 
@@ -89,6 +91,9 @@ namespace FIIServer.Controllers
                 var error = new Error("Given string is not Base64");
                 return BadRequest(error);
             }
+
+            System.Diagnostics.Debug.WriteLine("Converted from Base64");
+
 
             var filePath = "Pictures\\" + Guid.NewGuid();
             var fullPath = filePath + "." + imageFormat.ToString().ToLower();
@@ -107,16 +112,26 @@ namespace FIIServer.Controllers
 
             if (result.Score[0] < _lowerBound)
             {
+                System.Diagnostics.Debug.WriteLine("Could not determine picture");
+
                 var error = new Error("Picture could not be determined. Please retake the picture from another angle");
                 DeleteImageByPath(fullPath);
+
                 return BadRequest(error);
             }
 
             System.Diagnostics.Debug.WriteLine(result.Score[0] + "% : " + result.Prediction);
-            response.Model = result;
+
+            response.Prediction = result.Prediction;
+            response.Score = result.Score[0];
+
+            var testResponse = new TestResponse();
+            testResponse.Score = result.Score[0];
+            testResponse.Prediction = result.Prediction;
+
             DeleteImageByPath(fullPath);
 
-            return Ok(response);
+            return Ok(testResponse);
         }
 
         public static string GetAbsolutePath(string relativePath)

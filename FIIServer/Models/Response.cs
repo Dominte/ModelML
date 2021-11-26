@@ -6,6 +6,9 @@ namespace FIIServer.Models
     {
         public MLModel.ModelOutput Model { get; set; }
 
+        public string Prediction { get; set; }
+        
+        public float Score { get; set; }
         public List<Error> Errors { get; set; }
     }
 }
