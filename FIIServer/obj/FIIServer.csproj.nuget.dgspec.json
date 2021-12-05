@@ -57,6 +57,10 @@
               "target": "Package",
               "version": "[1.6.0, )"
             },
+            "MongoDB.Driver": {
+              "target": "Package",
+              "version": "[2.14.0, )"
+            },
             "SciSharp.TensorFlow.Redist": {
               "target": "Package",
               "version": "[2.3.1, )"
