@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FIIServer.Controllers
 {
-
     [ApiController]
     [Route("[controller]")]
     public class DatabaseController : ControllerBase
@@ -17,7 +16,6 @@ namespace FIIServer.Controllers
         public async Task<IEnumerable<Food>> GetAllDatabase()
         {
             var foods = await _foodRepository.GetAll();
-
             return foods;
         }
     }

@@ -11,6 +11,9 @@ namespace FIIServer.Models
         [BsonElement("name")]
         public string Name { get; set; }
 
+        [BsonElement("barcode")]
+        public string Barcode { get; set; }
+
         [BsonElement("lactoseFlag")]
         public bool LactoseFlag { get; set; }
 
@@ -29,7 +32,7 @@ namespace FIIServer.Models
         [BsonElement("peanutsFlag")]
         public bool PeanutsFlag { get; set; }
 
-        [BsonElement("almondFlag")]
-        public bool AlmondFlag { get; set; }
+        [BsonElement("almondsFlag")]
+        public bool AlmondsFlag { get; set; }
     }
 }

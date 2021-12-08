@@ -14,8 +14,8 @@ namespace FIIServer.Repository
         public IMongoCollection<Food> _collection = _database.GetCollection<Food>("Food");
         public async Task<IEnumerable<Food>> GetAll()
         {
-            var ceva = _collection.Find(g => g.Id != null).ToList();
-            return ceva;
+            var listFoods = _collection.Find(g => true).ToList();
+            return listFoods;
         }
     }
 
