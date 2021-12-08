@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using FIIServer.Models;
-using MongoDB.Bson;
+﻿using FIIServer.Models;
 using MongoDB.Driver;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FIIServer.Repository
 {
@@ -18,6 +17,4 @@ namespace FIIServer.Repository
             return listFoods;
         }
     }
-
-
 }

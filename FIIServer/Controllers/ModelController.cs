@@ -1,12 +1,12 @@
 ﻿using FIIServer.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.ML;
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using Microsoft.AspNetCore.Routing;
 using static System.String;
 
 namespace FIIServer.Controllers
@@ -125,9 +125,11 @@ namespace FIIServer.Controllers
             response.Prediction = result.Prediction;
             response.Score = result.Score[0];
 
-            var testResponse = new TestResponse();
-            testResponse.Score = result.Score[0];
-            testResponse.Prediction = result.Prediction;
+            var testResponse = new AndroidResponse
+            {
+                Score = result.Score[0],
+                Prediction = result.Prediction
+            };
 
             DeleteImageByPath(fullPath);
 

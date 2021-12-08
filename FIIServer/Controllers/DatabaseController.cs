@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using FIIServer.Models;
+﻿using FIIServer.Models;
 using FIIServer.Repository;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FIIServer.Controllers
 {
