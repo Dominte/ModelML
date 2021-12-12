@@ -18,7 +18,7 @@ namespace FIIServer.Controllers
         private readonly ILogger<ModelController> _logger;
         private readonly PredictionEnginePool<MLModel.ModelInput, MLModel.ModelOutput> _predictionEnginePool;
         private readonly string _imagesTmpFolder;
-        private float _lowerBound = (float)00.00;
+        private float _lowerBound = (float)00.95;
 
         public ModelController(ILogger<ModelController> logger, PredictionEnginePool<MLModel.ModelInput, MLModel.ModelOutput> predictionEnginePool)
         {

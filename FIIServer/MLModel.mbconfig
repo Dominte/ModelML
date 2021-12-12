@@ -7,10 +7,8 @@
     "FolderPath": "C:\\Users\\f.dominte\\Documents\\GitHub\\tba\\MachineLearningData\\Data"
   },
   "Environment": {
-    "Type": "Azure",
-    "Version": 1,
-    "SubscriptionID": "00000000-0000-0000-0000-000000000000",
-    "ExperimentName": "Imageclassification"
+    "Type": "LocalCPU",
+    "Version": 1
   },
   "RunHistory": {
     "Version": 0,
