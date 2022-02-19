@@ -11,6 +11,7 @@ namespace FIIServer.Repository
         public static MongoClient _client = new MongoClient(_settings);
         public static IMongoDatabase _database = _client.GetDatabase("Items");
         public IMongoCollection<Food> _collection = _database.GetCollection<Food>("Food");
+
         public async Task<IEnumerable<Food>> GetAll()
         {
             var listFoods = _collection.Find(g => true).ToList();
