@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "OqgDD2l6CsJKo1Em8aJAchgkT9jRJaHOtyBbuqowCgXL9jMdXHJsPGfSzbq6yRN0g6tSay8WWt8B+8VWM5B+KA==",
+  "dgSpecHash": "K7C3BsU+YqwH1uVnVcMTh2He9SEDwcg3RgRPjaiv29Z1L45tJahFAAXzf73Emcl1XgrPS8q3mppLpGuGqhWPPw==",
   "success": true,
   "projectFilePath": "C:\\Users\\f.dominte\\Documents\\GitHub\\tba\\ModelML\\FIIServer\\FIIServer.csproj",
   "expectedPackageFiles": [
@@ -124,8 +124,7 @@
     "C:\\Users\\f.dominte\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Users\\f.dominte\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
     "C:\\Users\\f.dominte\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512",
-    "C:\\Users\\f.dominte\\.nuget\\packages\\tensorflow.net\\0.20.1\\tensorflow.net.0.20.1.nupkg.sha512",
-    "C:\\Users\\f.dominte\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.18\\microsoft.netcore.app.host.win-x64.3.1.18.nupkg.sha512"
+    "C:\\Users\\f.dominte\\.nuget\\packages\\tensorflow.net\\0.20.1\\tensorflow.net.0.20.1.nupkg.sha512"
   ],
   "logs": []
 }
