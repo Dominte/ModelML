@@ -34,5 +34,10 @@ namespace FIIServer.Models
 
         [BsonElement("almondsFlag")]
         public bool AlmondsFlag { get; set; }
+
+        public Food(int id)
+        {
+            Id = id;
+        }
     }
 }

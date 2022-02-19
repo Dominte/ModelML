@@ -123,3 +123,4 @@ C:\Users\f.dominte\Documents\GitHub\tba\ModelML\FIIServer\bin\Debug\netcoreapp3.
 C:\Users\f.dominte\Documents\GitHub\tba\ModelML\FIIServer\bin\Debug\netcoreapp3.1\runtimes\linux\native\libmongocrypt.so
 C:\Users\f.dominte\Documents\GitHub\tba\ModelML\FIIServer\bin\Debug\netcoreapp3.1\runtimes\osx\native\libmongocrypt.dylib
 C:\Users\f.dominte\Documents\GitHub\tba\ModelML\FIIServer\bin\Debug\netcoreapp3.1\runtimes\win\native\mongocrypt.dll
+C:\Users\f.dominte\Documents\GitHub\tba\ModelML\FIIServer\obj\Debug\netcoreapp3.1\FIIServer.GeneratedMSBuildEditorConfig.editorconfig
